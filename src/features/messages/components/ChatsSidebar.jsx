@@ -16,7 +16,7 @@ export const ChatsSidebar = () => {
   );
 
   return (
-    <div className={`${activeChatId ? 'hidden md:flex' : 'flex'} w-full md:w-80 lg:w-96 border-r border-dark flex-col h-screen shrink-0`}>
+    <div className={`${activeChatId ? 'hidden md:flex' : 'flex'} w-full md:w-96 lg:w-128 border-r border-dark flex-col h-screen shrink-0`}>
       <div className="p-6 pb-2">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-bold text-main">My Chats</h2>
