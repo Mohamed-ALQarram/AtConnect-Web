@@ -4,7 +4,8 @@ import { useAuthStore } from '../features/auth/stores/useAuthStore';
 
 // Create a variable to hold the connection instance
 let connection = null;
-const url = "https://localhost:7217/Hubs/AtConnect";
+// const url = "https://localhost:7217/Hubs/AtConnect";
+const url = "https://atconnect.runasp.net/Hubs/AtConnect";
 // Function to establish the connection
 export const startConnection = async () => {
     // Return existing connection if it is already established
