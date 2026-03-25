@@ -16,7 +16,7 @@ export const HomePageHeader = () => {
             placeholder="Search members..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-64 bg-surface text-sm text-main placeholder-muted rounded-full py-2 pl-9 pr-4 focus:outline-none focus:ring-1 focus:ring-primary"
+            className="w-full sm:w-64 bg-surface text-sm text-main placeholder-muted rounded-full py-2 pl-9 pr-4 focus:outline-none focus:ring-1 focus:ring-primary"
           />
         </div>
 

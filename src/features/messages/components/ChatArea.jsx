@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Video, Phone, Search, MoreVertical, Plus, Smile, Mic, Send, MessageSquare } from 'lucide-react';
+import { Video, Phone, Search, MoreVertical, Plus, Smile, Mic, Send, MessageSquare, ArrowLeft } from 'lucide-react';
 import { useMessagesStore } from '../stores/messagesStore';
 import { useChatMessagesQuery } from '../hooks/useChatMessagesQuery';
 import { MessageBubble } from './MessageBubble';
@@ -8,6 +8,7 @@ import { useChat } from '../hooks/useChat';
 export const ChatArea = () => {
   const activeChatId = useMessagesStore((state) => state.activeChatId);
   const activeChatUser = useMessagesStore((state) => state.activeChatUser);
+  const setActiveChat = useMessagesStore((state) => state.setActiveChat);
   const [messageText, setMessageText] = useState('');
   const messagesEndRef = useRef(null);
   const { messages: newMessages, sendMessage, clearMessages } = useChat();
@@ -25,10 +26,15 @@ export const ChatArea = () => {
   // Filter new messages to only those belonging to the active chat
   const currentChatNewMessages = (newMessages || []).filter(m => String(m.chatId) === String(activeChatId));
 
-  // Since pagination usually returns latest messages first, we might need to reverse them
-  // Assuming the API returns newer messages on page 1, index 0. If so, we reverse to display chronologically.
-  // Then we append the new real-time messages at the bottom.
-  const displayMessages = [...messages].reverse().concat(currentChatNewMessages);
+  // Combine API messages (reversed for chronological order) and new real-time messages
+  const allMessages = [...messages].reverse().concat(currentChatNewMessages);
+
+  // Deduplicate by message ID to prevent React key collision errors and update statuses
+  const uniqueMessagesMap = new Map();
+  allMessages.forEach(msg => {
+    uniqueMessagesMap.set(String(msg.id), msg);
+  });
+  const displayMessages = Array.from(uniqueMessagesMap.values());
 
   // Scroll to bottom when new messages load
   useEffect(() => {
@@ -37,7 +43,7 @@ export const ChatArea = () => {
 
   if (!activeChatId) {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center bg-main">
+      <div className="hidden md:flex flex-1 flex-col items-center justify-center bg-main">
         <div className="w-16 h-16 bg-surface rounded-full flex items-center justify-center mb-4">
           <MessageSquare size={32} className="text-muted" />
         </div>
@@ -48,10 +54,16 @@ export const ChatArea = () => {
   }
 
   return (
-    <div className="flex-1 flex flex-col h-screen bg-main relative">
+    <div className={`${!activeChatId ? 'hidden md:flex' : 'flex'} flex-1 flex-col h-screen bg-main relative`}>
       {/* Header */}
       <div className="h-20 border-b border-dark px-6 flex items-center justify-between shrink-0 bg-main/95 backdrop-blur z-10">
         <div className="flex items-center gap-4">
+          <button
+            onClick={() => setActiveChat(null, null)}
+            className="md:hidden text-muted hover:text-main shrink-0 mr-2"
+          >
+            <ArrowLeft size={24} />
+          </button>
           <div className="relative">
             <img
               src={activeChatUser?.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${activeChatId}`}

@@ -6,4 +6,31 @@
   body {
     @apply bg-main text-main font-sans min-h-screen antialiased;
   }
+
+  /* Firefox Scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #292945 transparent;
+  }
+}
+
+/* Chrome, Edge, Safari Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #292945;
+  /* Tailwind bg-surface */
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+  /* Tailwind text-muted */
 }

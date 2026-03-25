@@ -3,13 +3,15 @@ import { Home, MessageSquare, Bell, User, Settings, LogOut } from 'lucide-react'
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../../auth/stores/useAuthStore';
 
-const SideBar = ({ slim = false }) => {
+const SideBar = ({ slim = false, hiddenOnMobile = false }) => {
     const navigate = useNavigate();
     const location = useLocation();
     const clearCredentials = useAuthStore(state => state.clearCredentials);
 
     return (
-        <div className={`bg-main ${slim ? 'w-[80px] min-w-[80px]' : 'w-[20%] min-w-64'} h-screen border-r border-dark py-4 flex flex-col items-center text-main relative`} >
+        <>
+        {/* Desktop Sidebar */}
+        <div className={`hidden md:flex bg-main ${slim ? 'w-[80px] min-w-[80px]' : 'w-[20%] min-w-64'} h-screen border-r border-dark py-4 flex-col items-center text-main relative`} >
             <div className={`flex gap-3 items-center w-full mb-8 ${slim ? 'justify-center' : 'px-4'}`}>
                 <img className="w-10 md:w-14 rounded-full" src={Logo} alt="@connect-logo" />
                 {!slim && (
@@ -46,6 +48,26 @@ const SideBar = ({ slim = false }) => {
                 </ul>
             </div>
         </div>
+
+        {/* Mobile Bottom Navigation */}
+        <div className={`md:hidden fixed bottom-0 left-0 right-0 h-16 bg-main border-t border-dark flex justify-around items-center z-[100] ${hiddenOnMobile ? 'hidden' : 'flex'}`}>
+            <button onClick={() => navigate('/')} className={`p-2 rounded-full flex items-center justify-center transition-colors ${location.pathname === '/' ? 'text-primary' : 'text-muted hover:text-main'}`}>
+                <Home size={24} />
+            </button>
+            <button onClick={() => navigate('/messages')} className={`p-2 rounded-full flex items-center justify-center transition-colors ${location.pathname.startsWith('/messages') ? 'text-primary' : 'text-muted hover:text-main'}`}>
+                <MessageSquare size={24} />
+            </button>
+            <button className='p-2 rounded-full flex items-center justify-center text-muted hover:text-main transition-colors'>
+                <Bell size={24} />
+            </button>
+            <button className='p-2 rounded-full flex items-center justify-center text-muted hover:text-main transition-colors'>
+                <User size={24} />
+            </button>
+            <button onClick={() => { clearCredentials(); navigate('/login'); }} className='p-2 rounded-full flex items-center justify-center text-danger hover:text-red-400 transition-colors'>
+                <LogOut size={24} />
+            </button>
+        </div>
+        </>
     )
 }
 

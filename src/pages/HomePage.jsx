@@ -9,7 +9,7 @@ export const HomePage = () => {
       <SideBar />
       
       {/* Main Content Area */}
-      <main className="flex-1 overflow-y-auto">
+      <main className="flex-1 overflow-y-auto pb-16 md:pb-0">
         <div className="max-w-7xl mx-auto px-6 md:px-10 pb-10">
           <HomePageHeader />
           <ChatRequestsSection />

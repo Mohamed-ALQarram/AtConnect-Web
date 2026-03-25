@@ -2,8 +2,10 @@ import { Search, Plus } from 'lucide-react';
 import { useUserChatsQuery } from '../hooks/useUserChatsQuery';
 import { ChatItem } from './ChatItem';
 import { useState } from 'react';
+import { useMessagesStore } from '../stores/messagesStore';
 
 export const ChatsSidebar = () => {
+  const activeChatId = useMessagesStore(state => state.activeChatId);
   const { data, isLoading, isError } = useUserChatsQuery(20);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -14,7 +16,7 @@ export const ChatsSidebar = () => {
   );
 
   return (
-    <div className="w-full md:w-80 lg:w-96 border-r border-dark flex flex-col h-screen">
+    <div className={`${activeChatId ? 'hidden md:flex' : 'flex'} w-full md:w-80 lg:w-96 border-r border-dark flex-col h-screen shrink-0`}>
       <div className="p-6 pb-2">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-bold text-main">My Chats</h2>
