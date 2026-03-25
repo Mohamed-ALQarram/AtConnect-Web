@@ -55,7 +55,7 @@ export const ChatArea = () => {
   }
 
   return (
-    <div className={`${!activeChatId ? 'hidden md:flex' : 'flex'} flex-1 flex-col h-screen bg-main relative`}>
+    <div className={`${!activeChatId ? 'hidden md:flex' : 'flex'} flex-1 flex-col h-[100dvh] bg-main relative`}>
       {/* Header */}
       <div className="h-20 border-b border-dark px-6 flex items-center justify-between shrink-0 bg-main/95 backdrop-blur z-10">
         <div className="flex items-center gap-4">
@@ -90,7 +90,7 @@ export const ChatArea = () => {
       </div>
 
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto p-6 flex flex-col hide-scrollbar">
+      <div className="flex-1 min-h-0 overflow-y-auto p-6 flex flex-col hide-scrollbar">
         {hasNextPage && (
           <div className="flex justify-center mb-4">
             <button
