@@ -36,11 +36,9 @@ export const LoginForm = () => {
   return (
     <div className="w-full max-w-md bg-card rounded-24 p-8 shadow-xl border border-dark flex flex-col items-center mx-auto">
       {/* Logo & Brand */}
-      <div className="flex items-center gap-2 mb-6">
-        <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white font-bold">
-          @
-        </div>
-        <h1 className="text-xl font-bold text-text-main">AtConnect</h1>
+      <div className="flex items-center gap-1 mb-6">
+        <img src="/AtConnect-Logo.png" alt="Logo" className="w-12 rounded-full object-cover" />
+        <h1 className="text-xl font-bold text-text-main">Connect</h1>
       </div>
 
       {/* Welcome Title */}
