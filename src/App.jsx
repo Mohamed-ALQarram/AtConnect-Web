@@ -4,6 +4,7 @@ import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { VerifyEmailPage } from './pages/VerifyEmailPage';
 import { HomePage } from './pages/HomePage';
+import { MessagesPage } from './pages/MessagesPage';
 
 // A simple wrapper map to protect routes that require login
 const ProtectedRoute = ({ children }) => {
@@ -65,6 +66,14 @@ function App() {
           element={
             <ProtectedRoute>
               <HomePage />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/messages" 
+          element={
+            <ProtectedRoute>
+              <MessagesPage />
             </ProtectedRoute>
           } 
         />
