@@ -1,5 +1,5 @@
 
-import  {api} from "g:/MyProjects/AtConnect-Web/src/Api/axios"
+import { api } from "../../../api/axios"
 
 // Login API request
 // Expects: { userNameOrEmail, password }
