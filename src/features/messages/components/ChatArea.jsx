@@ -4,6 +4,7 @@ import { useMessagesStore } from '../stores/messagesStore';
 import { useChatMessagesQuery } from '../hooks/useChatMessagesQuery';
 import { MessageBubble } from './MessageBubble';
 import { useChat } from '../hooks/useChat';
+import { getValidImageUrl } from '../../../utils/image';
 
 export const ChatArea = () => {
   const activeChatId = useMessagesStore((state) => state.activeChatId);
@@ -66,7 +67,7 @@ export const ChatArea = () => {
           </button>
           <div className="relative">
             <img
-              src={activeChatUser?.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${activeChatId}`}
+              src={getValidImageUrl(activeChatUser?.avatar) || `https://api.dicebear.com/7.x/avataaars/svg?seed=${activeChatUser?.userId}`}
               alt="Avatar"
               className="w-10 h-10 rounded-full object-cover bg-card"
             />

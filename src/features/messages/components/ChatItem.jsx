@@ -1,4 +1,5 @@
 import { useMessagesStore } from '../stores/messagesStore';
+import { getValidImageUrl } from '../../../utils/image';
 
 export const ChatItem = ({ chat }) => {
   const { activeChatId, setActiveChat } = useMessagesStore();
@@ -8,7 +9,7 @@ export const ChatItem = ({ chat }) => {
     setActiveChat(chat.chatId, {
       userId: chat.otherUserId,
       name: chat.otherUserName || 'User', // You might need to adjust based on exact API response mappings
-      avatar: chat.avatarURL,
+      avatar: getValidImageUrl(chat.avatarURL),
       isOnline: chat.isActive
     });
   };
@@ -31,7 +32,7 @@ export const ChatItem = ({ chat }) => {
     >
       <div className="relative">
         <img
-          src={chat.avatarURL || `https://api.dicebear.com/7.x/avataaars/svg?seed=${chat.otherUserId}`}
+          src={getValidImageUrl(chat.avatarURL) || `https://api.dicebear.com/7.x/avataaars/svg?seed=${chat.otherUserId}`}
           alt="Avatar"
           className="w-12 h-12 rounded-full object-cover bg-card"
         />
