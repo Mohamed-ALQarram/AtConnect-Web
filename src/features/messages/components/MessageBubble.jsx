@@ -43,9 +43,9 @@ export const MessageBubble = ({ message }) => {
           />
         )}
 
-        <div className={`flex flex-col ${isReceived ? 'items-start' : 'items-end'}`}>
+        <div className={`flex flex-col min-w-0 max-w-full ${isReceived ? 'items-start' : 'items-end'}`}>
           <div
-            className={`p-4 rounded-t-2xl text-sm ${isReceived
+            className={`p-4 rounded-t-2xl text-sm whitespace-pre-wrap break-all ${isReceived
               ? 'bg-surface text-main rounded-br-2xl'
               : 'bg-primary text-white rounded-bl-2xl'
               }`}
