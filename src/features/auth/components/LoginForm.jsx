@@ -96,13 +96,30 @@ export const LoginForm = () => {
         Forgot Username or Password?
       </button>
 
-      <div className="mt-8 text-sm text-text-muted">
-        Don't have an account?{' '}
+      <div className="mt-8 text-sm text-text-muted flex flex-col items-center gap-3">
+        <div>
+          Don't have an account?{' '}
+          <button
+            type="button"
+            className="text-primary font-semibold hover:underline focus:outline-none"
+            onClick={() => navigate('/register')}
+          >
+            Sign Up
+          </button>
+        </div>
+
+        <div className="w-full flex items-center gap-3 my-1">
+          <div className="flex-1 h-[1px] bg-dark"></div>
+          <span className="text-xs text-muted">OR</span>
+          <div className="flex-1 h-[1px] bg-dark"></div>
+        </div>
+
         <button
-          className="text-primary font-semibold hover:underline focus:outline-none"
-          onClick={() => navigate('/register')}
+          type="button"
+          className="w-full py-2.5 rounded-xl border border-dark hover:border-primary/40 text-main text-sm font-semibold hover:bg-surface transition-all flex items-center justify-center gap-2"
+          onClick={() => navigate('/guest')}
         >
-          Sign Up
+          Explore as Guest
         </button>
       </div>
     </div>

@@ -6,27 +6,29 @@ import { VerifyEmailPage } from './pages/VerifyEmailPage';
 import { HomePage } from './pages/HomePage';
 import { MessagesPage } from './pages/MessagesPage';
 
+import { GuestPage } from './pages/GuestPage';
+
 // A simple wrapper map to protect routes that require login
 const ProtectedRoute = ({ children }) => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  
+
   if (!isAuthenticated) {
     // Not logged in! Send them to the login page.
     return <Navigate to="/login" />;
   }
-  
+
   return children;
 };
 
 // A simple wrapper to send logged-in users away from auth pages
 const AuthRoute = ({ children }) => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  
+
   if (isAuthenticated) {
     // Already logged in! Send them to the home page.
-    return <Navigate to="/" />;
+    return <Navigate to="/home" />;
   }
-  
+
   return children;
 };
 
@@ -34,50 +36,53 @@ function App() {
   return (
     <Router>
       <Routes>
+        {/* Public Guest Page */}
+        <Route path="/" element={<GuestPage />} />
+
         {/* Public Authentication Pages */}
-        <Route 
-          path="/login" 
+        <Route
+          path="/login"
           element={
             <AuthRoute>
               <LoginPage />
             </AuthRoute>
-          } 
+          }
         />
-        <Route 
-          path="/register" 
+        <Route
+          path="/register"
           element={
             <AuthRoute>
               <RegisterPage />
             </AuthRoute>
-          } 
+          }
         />
-        <Route 
-          path="/verify-email" 
+        <Route
+          path="/verify-email"
           element={
             <AuthRoute>
               <VerifyEmailPage />
             </AuthRoute>
-          } 
+          }
         />
-        
+
         {/* Protected Application Pages */}
-        <Route 
-          path="/" 
+        <Route
+          path="/home"
           element={
             <ProtectedRoute>
               <HomePage />
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/messages" 
+        <Route
+          path="/messages"
           element={
             <ProtectedRoute>
               <MessagesPage />
             </ProtectedRoute>
-          } 
+          }
         />
-        
+
         {/* Catch-all route to redirect unknown pages to Home or Login */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

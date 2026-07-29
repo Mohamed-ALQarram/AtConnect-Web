@@ -45,8 +45,21 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // Check if the error is a 401 (Unauthorized) and we have not retried yet
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    // Check if the request is an auth endpoint (e.g., Login, Register, Verify, RefreshToken)
+    // Auth requests returning 401 should NOT trigger a token refresh loop or redirect.
+    const isAuthEndpoint = originalRequest?.url?.toLowerCase().includes('/api/account/login') ||
+                           originalRequest?.url?.toLowerCase().includes('/api/account/register') ||
+                           originalRequest?.url?.toLowerCase().includes('/api/account/verifyemailcode') ||
+                           originalRequest?.url?.toLowerCase().includes('/api/account/refreshtoken');
+
+    const { accessToken, refreshToken, setCredentials, clearCredentials } = useAuthStore.getState();
+
+    // Only attempt refresh if:
+    // 1. Status is 401 (Unauthorized)
+    // 2. Request hasn't been retried yet
+    // 3. Request is NOT an auth endpoint
+    // 4. We currently have an accessToken stored
+    if (error.response?.status === 401 && !originalRequest._retry && !isAuthEndpoint && accessToken) {
 
       // If a refresh is already in progress, put this request in a queue
       if (isRefreshing) {
@@ -64,12 +77,11 @@ api.interceptors.response.use(
       originalRequest._retry = true;
       isRefreshing = true;
 
-      // Get the current tokens from Zustand
-      const { accessToken, refreshToken, setCredentials, clearCredentials } = useAuthStore.getState();
-
       try {
+        const baseURL = api.defaults.baseURL || 'https://atconnect.runasp.net';
+        
         // Make the API call to refresh the token using a raw axios instance to avoid loops
-        const { data } = await axios.post('https://localhost:7217/api/Account/RefreshToken', {
+        const { data } = await axios.post(`${baseURL}/api/Account/RefreshToken`, {
           oldToken: accessToken,
           refreshToken: refreshToken
         });
@@ -95,19 +107,16 @@ api.interceptors.response.use(
           throw new Error('Refresh token request was not successful');
         }
       } catch (refreshError) {
-        // If the refresh call fails, clear the store and push them to Login
+        // If the refresh call fails, clear store credentials so ProtectedRoute redirects cleanly via React Router
         processQueue(refreshError, null);
         clearCredentials();
-
-        // A simple redirect to login page
-        window.location.href = '/login';
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;
       }
     }
 
-    // Pass the error back if it's not a 401
+    // Pass the error back if it's not handled by refresh
     return Promise.reject(error);
   }
 );
